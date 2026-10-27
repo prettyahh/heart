@@ -3,47 +3,71 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>I love you ❤️</title>
+<title>I love you ♥</title>
 <style>
-:root{color-scheme:dark;--red:#d6125e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html,body{height:100%;margin:0;background:#000}
-body{display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;overflow:hidden}
-#stage{position:relative;isolation:isolate;filter:drop-shadow(0 0 14px rgba(214,18,94,.6))}
-#stage::before{content:"";position:absolute;inset:6%;z-index:-1;background:radial-gradient(circle,rgba(214,18,94,.3),transparent 68%)}
-#stage span{position:absolute;white-space:nowrap;font-weight:600;color:var(--red);text-shadow:0 0 4px #d6125e,0 0 12px rgba(214,18,94,.9),0 0 24px rgba(200,0,100,.6);opacity:0;transform:translate(-50%,-50%) rotate(var(--r,0rad)) scale(.3);transition:opacity .4s,transform .4s cubic-bezier(.3,1.6,.5,1)}
-#stage span.on{opacity:1;transform:translate(-50%,-50%) rotate(var(--r,0rad)) scale(1)}
-#stage.beat{animation:beat 1.1s ease-in-out infinite}
-@keyframes beat{0%,100%{transform:scale(1)}15%{transform:scale(1.045)}30%{transform:scale(1)}45%{transform:scale(1.06)}}
-#cap{height:48px;margin-top:10px;text-align:center;color:#e0508a;font-size:15px;text-shadow:0 0 8px rgba(214,18,94,.6)}
-#cap b{display:block;font-size:22px;color:var(--red)}
+:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;margin:0;background:radial-gradient(ellipse at 50% 45%,#2a0716 0%,#0c0208 55%,#000 100%);touch-action:manipulation}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;overflow:hidden;user-select:none}
+#bg{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#stage{position:relative;isolation:isolate;filter:drop-shadow(0 0 16px rgba(214,18,94,.55))}
+#stage::before{content:"";position:absolute;inset:4%;z-index:-1;background:radial-gradient(circle,rgba(214,18,94,.32),transparent 66%)}
+#stage span{position:absolute;white-space:nowrap;font-weight:600;text-shadow:0 0 4px currentColor,0 0 14px currentColor;opacity:0;transform:translate(-50%,-50%) rotate(var(--r,0rad)) scale(.3);transition:opacity .45s,transform .45s cubic-bezier(.3,1.6,.5,1)}
+#stage span.on{opacity:1;transform:translate(-50%,-50%) rotate(var(--r,0rad)) scale(1);animation:flash .9s ease-out}
+#stage span.shim{animation:shim 2.6s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes flash{from{filter:brightness(3.5)}to{filter:brightness(1)}}
+@keyframes shim{0%,70%,100%{filter:brightness(1)}35%{filter:brightness(2.2)}}
+#stage.beat{animation:beat 1.2s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}14%{transform:scale(1.045)}28%{transform:scale(1)}42%{transform:scale(1.06)}}
+#cap{height:50px;margin-top:8px;text-align:center;color:#e0508a;font-size:15px;text-shadow:0 0 8px rgba(214,18,94,.6)}
+#cap b{display:block;font-size:22px;color:#ff4f9a}
+button{margin-top:4px;background:rgba(214,18,94,.15);color:#ff6fae;border:1px solid rgba(214,18,94,.7);border-radius:99px;padding:8px 22px;font-size:14px;box-shadow:0 0 14px rgba(214,18,94,.4);cursor:pointer}
 </style>
 </head>
 <body>
+<canvas id="bg"></canvas>
 <div id="stage"></div>
 <div id="cap"></div>
+<button id="re">↻ Replay</button>
 <script>
-const P=[["I love you","English"],["Te quiero","Spanish"],["Je t'aime","French"],["Ich liebe dich","German"],["Ti amo","Italian"],["Eu te amo","Portuguese"],["मैं तुमसे प्यार करता हूँ","Hindi"],["હું તને પ્રેમ કરું છું","Gujarati"],["मी तुझ्यावर प्रेम करतो","Marathi"],["আমি তোমাকে ভালোবাসি","Bengali"],["நான் உன்னை காதலிக்கிறேன்","Tamil"],["నేను నిన్ను ప్రేమిస్తున్నాను","Telugu"],["ਮੈਂ ਤੈਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ","Punjabi"],["میں تم سے پیار کرتا ہوں","Urdu"],["愛してる","Japanese"],["我爱你","Chinese"],["사랑해","Korean"],["أحبك","Arabic"],["Я тебя люблю","Russian"],["Σ' αγαπώ","Greek"],["Seni seviyorum","Turkish"],["Ik hou van je","Dutch"],["Jag älskar dig","Swedish"],["Jeg elsker deg","Norwegian"],["Jeg elsker dig","Danish"],["Minä rakastan sinua","Finnish"],["Kocham cię","Polish"],["Miluji tě","Czech"],["Szeretlek","Hungarian"],["Te iubesc","Romanian"],["Я тебе кохаю","Ukrainian"],["אני אוהב אותך","Hebrew"],["ฉันรักคุณ","Thai"],["Anh yêu em","Vietnamese"],["Aku cinta kamu","Indonesian"],["Mahal kita","Filipino"],["Nakupenda","Swahili"],["Ngiyakuthanda","Zulu"],["Ek is lief vir jou","Afrikaans"],["دوستت دارم","Persian"],["म तिमीलाई माया गर्छु","Nepali"],["Te amo","Latin"],["Tá grá agam duit","Irish"],["Rwy'n dy garu di","Welsh"],["Ég elska þig","Icelandic"],["T'estimo","Catalan"],["Aloha au iā ʻoe","Hawaiian"],["Mi amas vin","Esperanto"],["Обичам те","Bulgarian"],["Volim te","Croatian"],["Ľúbim ťa","Slovak"],["Aš tave myliu","Lithuanian"],["Es tevi mīlu","Latvian"],["Ma armastan sind","Estonian"],["Të dua","Albanian"],["Ես քեզ սիրում եմ","Armenian"],["მიყვარხარ","Georgian"],["Би чамд хайртай","Mongolian"],["እወድሃለሁ","Amharic"],["Mo nifẹ rẹ","Yoruba"],["Ina son ka","Hausa"],["Saya cintakan awak","Malay"]];
+const P=[["I love you","English"],["Te quiero","Spanish"],["Je t'aime","French"],["Ich liebe dich","German"],["Ti amo","Italian"],["Eu te amo","Portuguese"],["मैं तुमसे प्यार करता हूँ","Hindi"],["હું તને પ્રેમ કરું છું","Gujarati"],["मी तुझ्यावर प्रेम करतो","Marathi"],["আমি তোমাকে ভালোবাসি","Bengali"],["நான் உன்னை காதலிக்கிறேன்","Tamil"],["నేను నిన్ను ప్రేమిస్తున్నాను","Telugu"],["ਮੈਂ ਤੈਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ","Punjabi"],["میں تم سے پیار کرتا ہوں","Urdu"],["愛してる","Japanese"],["我爱你","Chinese"],["사랑해","Korean"],["أحبك","Arabic"],["Я тебя люблю","Russian"],["Σ' αγαπώ","Greek"],["Seni seviyorum","Turkish"],["Ik hou van je","Dutch"],["Jag älskar dig","Swedish"],["Jeg elsker deg","Norwegian"],["Jeg elsker dig","Danish"],["Minä rakastan sinua","Finnish"],["Kocham cię","Polish"],["Miluji tě","Czech"],["Szeretlek","Hungarian"],["Te iubesc","Romanian"],["Я тебе кохаю","Ukrainian"],["אני אוהב אותך","Hebrew"],["ฉันรักคุณ","Thai"],["Anh yêu em","Vietnamese"],["Aku cinta kamu","Indonesian"],["Mahal kita","Filipino"],["Nakupenda","Swahili"],["Ngiyakuthanda","Zulu"],["Ek is lief vir jou","Afrikaans"],["دوستت دارم","Persian"],["म तिमीलाई माया गर्छु","Nepali"],["Te amo","Latin"],["Tá grá agam duit","Irish"],["Rwy'n dy garu di","Welsh"],["Ég elska þig","Icelandic"],["T'estimo","Catalan"],["Aloha au iā ʻoe","Hawaiian"],["Mi amas vin","Esperanto"],["Обичам те","Bulgarian"],["Volim te","Croatian"],["Ľúbim ťa","Slovak"],["Aš tave myliu","Lithuanian"],["Es tevi mīlu","Latvian"],["Ma armastan sind","Estonian"],["Të dua","Albanian"],["Ես քեզ սիրում եմ","Armenian"],["მიყვარხარ","Georgian"],["Би чамд хайртай","Mongolian"],["እወድሃለሁ","Amharic"],["Mo nifẹ rẹ","Yoruba"],["Ina son ka","Hausa"],["Saya cintakan awak","Malay"],["Ljubim te","Slovenian"],["Те сакам","Macedonian"],["Maite zaitut","Basque"],["Inħobbok","Maltese"],["Quérote","Galician"]];
 const FONT='system-ui,"Noto Sans","Noto Sans Devanagari","Noto Sans Gujarati",sans-serif';
 const stage=document.getElementById('stage'),cap=document.getElementById('cap');
 let timers=[],items=[];
-const inside=(x,y)=>Math.pow(x*x+y*y-1,3)-x*x*y*y*y<=0;
 
+/* background: floating hearts + sparkles, bursts on tap */
+const bg=document.getElementById('bg'),bx=bg.getContext('2d'),ps=[];let W,Hh;
+function sizeBg(){const d=devicePixelRatio||1;W=innerWidth;Hh=innerHeight;bg.width=W*d;bg.height=Hh*d;bx.setTransform(d,0,0,d,0,0)}
+function spawn(x,y,burst){const a=Math.random()*6.28,v=burst?1+Math.random()*3:.3+Math.random()*.6;
+  ps.push({x,y,vx:burst?Math.cos(a)*v:(Math.random()-.5)*.3,vy:burst?Math.sin(a)*v:-v,l:0,m:burst?60:300+Math.random()*300,s:burst?8+Math.random()*10:6+Math.random()*10,h:Math.random()<.6})}
+function frame(){
+  bx.clearRect(0,0,W,Hh);
+  if(ps.length<45&&Math.random()<.15)spawn(Math.random()*W,Hh+10,false);
+  for(let i=ps.length-1;i>=0;i--){const p=ps[i];p.l++;p.x+=p.vx;p.y+=p.vy;
+    if(p.l>p.m||p.y<-20){ps.splice(i,1);continue}
+    bx.globalAlpha=Math.sin(Math.PI*p.l/p.m)*.7;bx.fillStyle=p.h?'#d6125e':'#ffb3d1';
+    bx.font=p.s+'px sans-serif';bx.textAlign='center';bx.fillText(p.h?'\u2665':'\u2726',p.x,p.y)}
+  bx.globalAlpha=1;requestAnimationFrame(frame)}
+sizeBg();for(let i=0;i<25;i++){spawn(Math.random()*W,Math.random()*Hh,false);ps[i].l=Math.random()*200}
+frame();
+addEventListener('pointerdown',e=>{for(let i=0;i<14;i++)spawn(e.clientX,e.clientY,true)});
+
+/* heart of words */
 function build(){
   timers.forEach(clearTimeout);timers=[];
   stage.innerHTML='';stage.classList.remove('beat');cap.innerHTML='';
-  const S=Math.max(240,Math.min(innerWidth-20,innerHeight-130,560));
+  const S=Math.max(240,Math.min(innerWidth-20,innerHeight-160,560));
   stage.style.width=stage.style.height=S+'px';
   const f=Math.max(8,S/36),u=S*.92/34,gapMin=f*.9,N=600,maxW=S*.19;
   const ctx=document.createElement('canvas').getContext('2d');ctx.font=`600 ${f}px ${FONT}`;
   const meas=t=>{const w=ctx.measureText(t).width,sc=w>maxW?maxW/w:1;return{w:w*sc,sc}};
   const nextValid=j=>{while(true){const p=P[j%P.length],m=meas(p[0]);if(m.sc>=.62)return[j,p,m];j++}};
   let idx=0;items=[];
-  const add=(text,x,y,size,ang,p)=>{
+  const add=(text,x,y,size,ang,p,color)=>{
     const el=document.createElement('span');el.textContent=text;
-    el.style.cssText=`left:${x}px;top:${y}px;font-size:${size}px;font-family:${FONT};--r:${ang}rad`;
+    el.style.cssText=`left:${x}px;top:${y}px;font-size:${size}px;font-family:${FONT};--r:${ang}rad;color:${color}`;
     stage.appendChild(el);items.push({el,p});
   };
-  for(const k of [1,.74,.48,.22]){
+  [1,.74,.48,.22].forEach((k,ri)=>{
     const pts=[],cum=[0];
     for(let i=0;i<=N;i++){
       const t=Math.PI+2*Math.PI*i/N;
@@ -55,38 +79,38 @@ function build(){
     const pos=d=>{d=Math.max(0,Math.min(L,d));let i=1;while(i<N&&cum[i]<d)i++;const q=(d-cum[i-1])/((cum[i]-cum[i-1])||1);return[pts[i-1][0]+(pts[i][0]-pts[i-1][0])*q,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*q]};
     for(let h=0;h<2;h++){
       const sel=[];let tot=0,j=idx;
-      while(true){
-        const [jj,p,m]=nextValid(j);
-        if(tot+m.w+(sel.length+1)*gapMin>H)break;
-        sel.push({p,w:m.w,sc:m.sc});tot+=m.w;j=jj+1;
-      }
+      while(true){const [jj,p,m]=nextValid(j);if(tot+m.w+(sel.length+1)*gapMin>H)break;sel.push({p,w:m.w,sc:m.sc});tot+=m.w;j=jj+1}
       idx=j;if(!sel.length)continue;
       const gap=(H-tot)/(sel.length+1);let s=gap;
       for(const w of sel){
-        const base=h*H,mid=base+s+w.w/2,c=pos(mid),a=pos(mid-w.w/2),b=pos(mid+w.w/2);
-        add(w.p[0],c[0],c[1],f*w.sc,Math.atan2(b[1]-a[1],b[0]-a[0]),w.p);
+        const mid=h*H+s+w.w/2,c=pos(mid),a=pos(mid-w.w/2),b=pos(mid+w.w/2);
+        const col=`hsl(${326+(items.length*9)%26},88%,${46+ri*6}%)`;
+        add(w.p[0],c[0],c[1],f*w.sc,Math.atan2(b[1]-a[1],b[0]-a[0]),w.p,col);
         s+=w.w+gap;
       }
     }
-  }
-  add('\u2665',S/2,S/2-.3*u,f*2.4,0,['\u2665','I love you']);
+  });
+  add('\u2665',S/2,S/2-.3*u,f*2.6,0,['\u2665','I love you'],'#ff4f9a');
   play();
 }
 function play(){
-  items.forEach((it,i)=>{
-    timers.push(setTimeout(()=>{
-      it.el.classList.add('on');
-      cap.innerHTML=`<b>${it.p[0]}</b>${it.p[1]}`;
-    },i*100+300));
-  });
-  timers.push(setTimeout(()=>{stage.classList.add('beat');cap.innerHTML='<b>❤️</b>tap to replay'},items.length*100+900));
+  timers.forEach(clearTimeout);timers=[];
+  items.forEach((it,i)=>timers.push(setTimeout(()=>{
+    it.el.classList.add('on');
+    cap.innerHTML=`<b>${it.p[0]}</b>${it.p[1]}`;
+  },i*100+300)));
+  timers.push(setTimeout(()=>{
+    stage.classList.add('beat');
+    items.forEach((it,i)=>{it.el.style.setProperty('--d',(i*0.05)+'s');it.el.classList.add('shim')});
+    cap.innerHTML=`<b>\u2665</b>${P.length} languages, one love`;
+  },items.length*100+1000));
 }
-document.body.addEventListener('click',()=>{
-  timers.forEach(clearTimeout);stage.classList.remove('beat');
-  items.forEach(it=>it.el.classList.remove('on'));
-  setTimeout(play,300);
-});
-let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(build,250)});
+document.getElementById('re').onclick=e=>{
+  e.stopPropagation();timers.forEach(clearTimeout);stage.classList.remove('beat');cap.innerHTML='';
+  items.forEach(it=>it.el.classList.remove('on','shim'));
+  timers.push(setTimeout(play,400));
+};
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{sizeBg();build()},250)});
 build();
 </script>
 </body>
