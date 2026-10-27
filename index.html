@@ -1,0 +1,149 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Love You ❤️</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #050000;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+#heart {
+  position: relative;
+  width: min(94vw, 500px);
+  height: min(90vh, 500px);
+}
+
+.love {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  color: #ff1744;
+  font-size: clamp(9px, 2.5vw, 13px);
+  white-space: nowrap;
+  opacity: 0;
+  text-shadow: 0 0 8px #ff1744;
+  animation: appear 1.8s ease forwards;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+
+  30%, 75% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  100% {
+    opacity: 0.9;
+  }
+}
+</style>
+</head>
+
+<body>
+<div id="heart"></div>
+
+<script>
+const phrases = [
+  "I love you ❤️",
+  "Te amo",
+  "Je t'aime",
+  "Ich liebe dich",
+  "Ti amo",
+  "Eu te amo",
+  "Ya tebya lyublyu",
+  "Main tumse pyaar karta hoon",
+  "मैं तुमसे प्यार करता हूँ",
+  "আমি তোমাকে ভালোবাসি",
+  "我爱你",
+  "愛してる",
+  "사랑해",
+  "Я тебя люблю",
+  "Seni seviyorum",
+  "Mahal kita",
+  "Kocham cię",
+  "Ik hou van jou",
+  "Jeg elsker deg",
+  "Jeg elsker dig",
+  "Volim te",
+  "Te quiero",
+  "أحبك",
+  "ฉันรักคุณ",
+  "Ngiyakuthanda",
+  "Ninakupenda",
+  "Aishiteru",
+  "Wo ai ni",
+  "Minä rakastan sinua",
+  "T'estimo",
+  "Tá grá agam duit",
+  "Love you forever 💗",
+  "You are my favorite person",
+  "Meri jaan ❤️",
+  "My bebi 💕"
+];
+
+const heart = document.getElementById("heart");
+const total = 180;
+
+function createHeart() {
+  heart.innerHTML = "";
+
+  const points = [];
+
+  while (points.length < total) {
+    const x = Math.random() * 2.4 - 1.2;
+    const y = Math.random() * 2.4 - 1.2;
+
+    const equation =
+      Math.pow(x * x + y * y - 1, 3) -
+      x * x * y * y * y;
+
+    if (equation <= 0) {
+      points.push({ x, y });
+    }
+  }
+
+  points.forEach((point, index) => {
+    const span = document.createElement("span");
+
+    span.className = "love";
+    span.textContent =
+      phrases[Math.floor(Math.random() * phrases.length)];
+
+    span.style.left =
+      ((point.x + 1.2) / 2.4 * 100) + "%";
+
+    span.style.top =
+      ((1.2 - point.y) / 2.4 * 100) + "%";
+
+    span.style.animationDelay =
+      (index * 0.055) + "s";
+
+    heart.appendChild(span);
+  });
+}
+
+createHeart();
+
+window.addEventListener("resize", createHeart);
+</script>
+</body>
+</html>
+```
