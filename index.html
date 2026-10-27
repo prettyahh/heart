@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I Love You ❤️</title>
+<title>For My Love ❤️</title>
 
 <style>
 * {
@@ -13,52 +13,197 @@
 
 body {
   margin: 0;
-  background: #050000;
   min-height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #200008 0%, #090004 55%, #020002 100%);
+  color: #ffd5df;
+  font-family: "Trebuchet MS", Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
+}
+
+.app {
+  width: 100%;
+  max-width: 600px;
+  height: 100dvh;
+  min-height: 500px;
+  padding: 18px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  text-align: center;
+}
+
+h1 {
+  font-size: clamp(23px, 6vw, 34px);
+  color: #ff5578;
+  text-shadow: 0 0 16px #ff1744;
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #d9a3b0;
+  margin: 0 0 12px;
 }
 
 #heart {
   position: relative;
-  width: min(94vw, 500px);
-  height: min(90vh, 500px);
+  width: min(92vw, 430px);
+  height: min(55vh, 390px);
+  min-height: 270px;
+  flex-shrink: 0;
+  cursor: pointer;
+  filter: drop-shadow(0 0 12px #ff003b);
+  transition: transform .25s;
+  touch-action: manipulation;
+}
+
+#heart:active {
+  transform: scale(1.04);
 }
 
 .love {
   position: absolute;
   transform: translate(-50%, -50%);
-  color: #ff1744;
-  font-size: clamp(9px, 2.5vw, 13px);
+  color: #ff355d;
+  font-size: clamp(8px, 2.4vw, 12px);
   white-space: nowrap;
+  text-shadow: 0 0 7px #ff003b, 0 0 14px #ff1744;
   opacity: 0;
-  text-shadow: 0 0 8px #ff1744;
-  animation: appear 1.8s ease forwards;
+  animation: appear 1.3s ease forwards;
+  pointer-events: none;
 }
 
 @keyframes appear {
+  0% { opacity: 0; }
+  100% { opacity: .95; }
+}
+
+#heart.beat {
+  animation: beat .45s ease;
+}
+
+@keyframes beat {
+  0%, 100% { transform: scale(1); }
+  35% { transform: scale(1.07); }
+  65% { transform: scale(.98); }
+}
+
+.message {
+  min-height: 44px;
+  max-width: 340px;
+  padding: 8px;
+  color: #ff9aaf;
+  font-size: 14px;
+  line-height: 1.5;
+  text-shadow: 0 0 8px #ff1744;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 8px;
+}
+
+button {
+  border: 1px solid #ff456a;
+  background: #35000f;
+  color: #ffdce4;
+  border-radius: 25px;
+  padding: 11px 17px;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 0 12px #75001e66;
+  transition: .2s;
+}
+
+button:hover {
+  background: #760020;
+  box-shadow: 0 0 17px #ff1744;
+}
+
+#score {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #ff91a8;
+}
+
+.floating {
+  position: fixed;
+  z-index: 10;
+  border: none;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  animation: floatUp 3.5s linear forwards;
+}
+
+@keyframes floatUp {
   0% {
+    transform: translateY(0) rotate(0);
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5);
   }
-
-  30%, 75% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-
+  10% { opacity: 1; }
+  90% { opacity: 1; }
   100% {
-    opacity: 0.9;
+    transform: translateY(-85vh) rotate(35deg);
+    opacity: 0;
   }
+}
+
+.sparkle {
+  position: fixed;
+  pointer-events: none;
+  color: #ff6688;
+  font-size: 17px;
+  z-index: 15;
+  animation: sparkle .8s ease-out forwards;
+}
+
+@keyframes sparkle {
+  to {
+    transform: translateY(-40px) scale(1.8);
+    opacity: 0;
+  }
+}
+
+.hint {
+  font-size: 11px;
+  color: #92616f;
+  margin-top: 8px;
 }
 </style>
 </head>
 
 <body>
-<div id="heart"></div>
+<main class="app">
+  <h1>For My Favourite Person ❤️</h1>
+  <p class="subtitle">A thousand ways to say three little words</p>
+
+  <div id="heart" title="Tap the heart for some love"></div>
+
+  <div class="message" id="message">
+    Every language in the world, and I'd still choose you. ❤️
+  </div>
+
+  <div class="controls">
+    <button id="reveal">💌 Read my heart</button>
+    <button id="game">💗 Catch the hearts</button>
+    <button id="reset">↻ Start again</button>
+  </div>
+
+  <div id="score">Hearts collected: 0</div>
+  <div class="hint">Tap the big heart or catch the little hearts ✨</div>
+</main>
 
 <script>
 const phrases = [
@@ -68,7 +213,6 @@ const phrases = [
   "Ich liebe dich",
   "Ti amo",
   "Eu te amo",
-  "Ya tebya lyublyu",
   "Main tumse pyaar karta hoon",
   "मैं तुमसे प्यार करता हूँ",
   "আমি তোমাকে ভালোবাসি",
@@ -88,25 +232,43 @@ const phrases = [
   "ฉันรักคุณ",
   "Ngiyakuthanda",
   "Ninakupenda",
-  "Aishiteru",
   "Wo ai ni",
   "Minä rakastan sinua",
   "T'estimo",
   "Tá grá agam duit",
-  "Love you forever 💗",
-  "You are my favorite person",
   "Meri jaan ❤️",
   "My bebi 💕"
 ];
 
+const messages = [
+  "Every language in the world, and I'd still choose you. ❤️",
+  "Main tumse pyaar karta hoon, meri jaan. 💗",
+  "You are my favourite person, today and always.",
+  "If I had a thousand hearts, all of them would choose you.",
+  "No distance, no language, nothing changes how much I love you.",
+  "You deserve all the softest, sweetest love in the world. 🫶",
+  "My bebi, you make my world a little warmer. 💕"
+];
+
 const heart = document.getElementById("heart");
-const total = 180;
+const message = document.getElementById("message");
+const scoreText = document.getElementById("score");
+
+let score = 0;
+let gameRunning = false;
+let gameTimer = null;
+let messageIndex = 0;
+let round = 0;
 
 function createHeart() {
   heart.innerHTML = "";
 
+  const width = heart.clientWidth;
+  const height = heart.clientHeight;
   const points = [];
+  const total = 175;
 
+  // Heart-shaped mathematical curve
   while (points.length < total) {
     const x = Math.random() * 2.4 - 1.2;
     const y = Math.random() * 2.4 - 1.2;
@@ -122,7 +284,6 @@ function createHeart() {
 
   points.forEach((point, index) => {
     const span = document.createElement("span");
-
     span.className = "love";
     span.textContent =
       phrases[Math.floor(Math.random() * phrases.length)];
@@ -134,15 +295,122 @@ function createHeart() {
       ((1.2 - point.y) / 2.4 * 100) + "%";
 
     span.style.animationDelay =
-      (index * 0.055) + "s";
+      (index * 0.035) + "s";
 
     heart.appendChild(span);
   });
 }
 
-createHeart();
+function sparkle(x, y) {
+  for (let i = 0; i < 9; i++) {
+    const star = document.createElement("span");
+    star.className = "sparkle";
+    star.textContent = ["♥", "✦", "♡", "✧"][
+      Math.floor(Math.random() * 4)
+    ];
+
+    star.style.left = (x + Math.random() * 70 - 35) + "px";
+    star.style.top = (y + Math.random() * 50 - 25) + "px";
+    document.body.appendChild(star);
+
+    setTimeout(() => star.remove(), 850);
+  }
+}
+
+heart.addEventListener("click", (event) => {
+  heart.classList.remove("beat");
+  void heart.offsetWidth;
+  heart.classList.add("beat");
+
+  sparkle(event.clientX, event.clientY);
+
+  message.textContent = [
+    "Hearts can beat. Mine beats for you. ❤️",
+    "One little tap, a whole lot of love. 💗",
+    "Main tumse pyaar karta hoon, meri jaan. 🫶"
+  ][Math.floor(Math.random() * 3)];
+});
+
+document.getElementById("reveal").addEventListener("click", () => {
+  message.textContent = messages[messageIndex];
+  messageIndex = (messageIndex + 1) % messages.length;
+
+  const rect = heart.getBoundingClientRect();
+  sparkle(rect.left + rect.width / 2, rect.top + rect.height / 2);
+});
+
+function spawnHeart() {
+  if (!gameRunning) return;
+
+  const item = document.createElement("button");
+  item.className = "floating";
+  item.textContent = ["💗", "❤️", "💕", "💖"][
+    Math.floor(Math.random() * 4)
+  ];
+
+  item.style.left = (5 + Math.random() * 85) + "vw";
+  item.style.bottom = "-35px";
+
+  let caught = false;
+
+  item.addEventListener("click", () => {
+    if (caught) return;
+    caught = true;
+    score++;
+    scoreText.textContent = "Hearts collected: " + score;
+    message.textContent = [
+      "You caught a little piece of my love. 💗",
+      "Another heart, all for you! ❤️",
+      "Keep going, my favourite person! 💕",
+      "If love were points, you'd have infinity. ♾️"
+    ][Math.floor(Math.random() * 4)];
+
+    sparkle(item.getBoundingClientRect().left,
+            item.getBoundingClientRect().top);
+    item.remove();
+  });
+
+  document.body.appendChild(item);
+  setTimeout(() => item.remove(), 3600);
+}
+
+document.getElementById("game").addEventListener("click", () => {
+  if (gameRunning) {
+    gameRunning = false;
+    clearInterval(gameTimer);
+    gameTimer = null;
+    document.getElementById("game").textContent = "💗 Catch the hearts";
+    message.textContent = "You collected " + score + " hearts! All my love is yours. ❤️";
+    return;
+  }
+
+  gameRunning = true;
+  document.getElementById("game").textContent = "⏸ Stop game";
+  message.textContent = "Catch as many floating hearts as you can! 💕";
+
+  spawnHeart();
+  gameTimer = setInterval(spawnHeart, 650);
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+  gameRunning = false;
+  clearInterval(gameTimer);
+  gameTimer = null;
+  score = 0;
+  messageIndex = 0;
+
+  document.querySelectorAll(".floating, .sparkle").forEach(el => el.remove());
+
+  scoreText.textContent = "Hearts collected: 0";
+  message.textContent = "Every language in the world, and I'd still choose you. ❤️";
+  document.getElementById("game").textContent = "💗 Catch the hearts";
+
+  createHeart();
+});
 
 window.addEventListener("resize", createHeart);
+
+createHeart();
 </script>
 </body>
 </html>
